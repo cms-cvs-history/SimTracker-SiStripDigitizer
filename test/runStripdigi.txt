@@ -9,14 +9,29 @@ GeometryConfiguration="allConfiguration.xml"}
         es_module = TrackerDigiGeometryESModule {}
 	module prova =  SiStripDigitizer {
            string SimProducer = "SimDigitizer"	
-           double ElectronPerAdc = 135.0 
+#	   int32 NumStripsMax = 728
+	   bool APVpeakmode = false
+	   bool NoNoise = false
+	   bool LandauFluctuations = true
+	   int32 chargeDivisionsPerStrip = 10
+	   double DepletionVoltage = 140.
+	   double AppliedVoltage = 150.
+	   double ChargeMobility = 480.
+	   double Temperature = 297.
+	   bool noDiffusion = false
+	   double ChargeDistributionRMS = 6.5e-10
+	   double GevPerElectron = 3.61e-09
+
+           double ElectronPerAdc = 313.0 
+	   double EquivalentNoiseCharge300um = 2160.
+	   double AdcThreshold = 2.
 	   int32 AdcFullScale = 255
 	   double ThresholdInNoiseUnits = 5.
-	   double TofCut = 12.5	  
+#	   double TofCut = 100.
 	   int32 AddStripInefficiency = 0
 	   bool AddNoise = true
 	   bool AddNoisyStrips = true
-           double DeltaProductionCut= 0.030 
+           double DeltaProductionCut= 0.120425 
 	   bool FluctuateCharge = true
 	   int32 addStripInefficiency = 0
            double StripEff = -1.0
@@ -25,7 +40,10 @@ GeometryConfiguration="allConfiguration.xml"}
 	   double GainSmearing = 0.0
 	   double OffsetSmearing = 0.0
 	   int32 StripAPV = 128
-# WARNING: those numbers are TEMPORARY placeholders, mostly taken from the PIXEL package; I'll take the ORCA values as soon as possible.
+	   
+	   int32 FedAlgorithm = 4
+	   double FedLowThreshold = 2.
+	   double FedHighThreshold = 5.
 
 	   untracked int32 VerbosityLevel = 2		 
 	}

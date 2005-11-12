@@ -7,9 +7,8 @@ source = EmptySource {
 GeometryConfiguration="allConfiguration.xml"}
         es_module = TrackerGeometricDetESModule {}
         es_module = TrackerDigiGeometryESModule {}
-	module prova =  SiStripDigitizer {
+	module stripdigi =  SiStripDigitizer {
            string SimProducer = "SimDigitizer"	
-#	   int32 NumStripsMax = 728
 	   bool APVpeakmode = false
 	   bool NoNoise = false
 	   bool LandauFluctuations = true
@@ -51,5 +50,5 @@ GeometryConfiguration="allConfiguration.xml"}
                untracked string fileName = 'stripdigi.root'
         }
                                                                                                              
-	path p = {prova,out}
+	path p = {stripdigi,out}
 }

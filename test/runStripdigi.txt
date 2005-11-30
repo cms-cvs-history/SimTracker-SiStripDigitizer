@@ -1,10 +1,10 @@
 process PROD = {
 
-source = EmptySource { 
+        source = EmptySource { 
 	       int32 maxEvents = 4	
 	}
-        es_source = XMLIdealGeometryESSource {string
-GeometryConfiguration="allConfiguration.xml"}
+        es_module = VolumeBasedMagneticFieldESProducer {}
+	es_source = XMLIdealGeometryESSource {FileInPath GeometryConfiguration="SimTracker/SiPixelDigitizer/test/testConfiguration.xml" string rootNodeName = ""}
         es_module = TrackerGeometricDetESModule {}
         es_module = TrackerDigiGeometryESModule {}
 	module stripdigi =  SiStripDigitizer {
@@ -26,7 +26,7 @@ GeometryConfiguration="allConfiguration.xml"}
 	   double AdcThreshold = 2.
 	   int32 AdcFullScale = 255
 	   double ThresholdInNoiseUnits = 5.
-#	   double TofCut = 100.
+           double TanLorentzAnglePerTesla =0.106
 	   int32 AddStripInefficiency = 0
 	   bool AddNoise = true
 	   bool AddNoisyStrips = true

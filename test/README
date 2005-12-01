@@ -1,0 +1,11 @@
+In order to run with the SiStripDigitizer package in this version, you need to do the following:
+
+setenv  Magfield_PATH /afs/cern.ch/cms/Releases/Geometry/Geometry_1_23_0/src/Data/FieldTables/
+setenv CMSSW_DATA_PATH scratch0/CMSSW_0_3_0_pre2/src/
+
+In order to avoid unnecessary replicas of the same file, the runStripDigi.txt configuration file calls an xml file from inside the SimTracker/SiPixelDigitizer package.
+So checkout SimTracker/SiPixelDigitizer (with no need to compile it).
+
+This xml file points to several files in the Geometry subsystem. So checkout Geometry, and again there is no need to compile it.
+
+At present, you also need to checkout the latest version of DataFormats/SiStripDigi (and in this case you need to compile it!) otherwise you will have a crash when the program tries to push the digi collection inside the output root file.

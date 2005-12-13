@@ -1,2 +1,0 @@
-setenv  Magfield_PATH /afs/cern.ch/cms/Releases/Geometry/Geometry_1_23_0/src/Data/FieldTables/
-setenv CMSSW_DATA_PATH scratch0/CMSSW_0_3_0_pre2/src/

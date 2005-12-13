@@ -4,8 +4,7 @@ process PROD = {
 	       int32 maxEvents = 4	
 	}
         es_module = VolumeBasedMagneticFieldESProducer {}
-	es_source = XMLIdealGeometryESSource {FileInPath GeometryConfiguration="SimTracker/SiStripDigitizer/test/allConfiguration.xml" string rootNodeName = ""}
-# note that at moment I prefer to ask the xml file inside SiPixelDigitizer in order to avoid unnecessary replications of the same file!
+	es_source = XMLIdealGeometryESSource {FileInPath GeometryConfiguration="SimTracker/SiStripDigitizer/test/data/allConfiguration.xml" string rootNodeName = ""}
         es_module = TrackerGeometricDetESModule {}
         es_module = TrackerDigiGeometryESModule {}
 	module stripdigi =  SiStripDigitizer {

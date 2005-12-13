@@ -1,8 +1,15 @@
 process PROD = {
 
-        source = EmptySource { 
-	       int32 maxEvents = 4	
+	source = PoolSource { 
+          untracked string fileName = 'simevent.root'
+          untracked int32 maxEvents = 5
+          untracked uint32 debugVebosity = 10
+          untracked bool   debugFlag     = true
 	}
+
+#        source = EmptySource { 
+#	       int32 maxEvents = 4	
+#	}
         es_module = VolumeBasedMagneticFieldESProducer {}
 	es_source = XMLIdealGeometryESSource {FileInPath GeometryConfiguration="SimTracker/SiStripDigitizer/test/data/allConfiguration.xml" string rootNodeName = ""}
         es_module = TrackerGeometricDetESModule {}

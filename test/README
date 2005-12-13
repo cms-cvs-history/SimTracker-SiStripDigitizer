@@ -1,6 +1,4 @@
 In order to run with the SiStripDigitizer package in this version, you need to do the following:
 
 setenv  Magfield_PATH /afs/cern.ch/cms/Releases/Geometry/Geometry_1_23_0/src/Data/FieldTables/
-setenv CMSSW_DATA_PATH scratch0/CMSSW_0_3_0_pre3/src/
-
-This xml file points to several files in the Geometry subsystem. So checkout Geometry, but there is no need to compile it.
+setenv CMSSW_DATA_PATH scratch0/CMSSW_0_3_0_pre4/src/

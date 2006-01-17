@@ -7,10 +7,19 @@ process PROD = {
           untracked bool   debugFlag     = true
 	}
 
-#        source = EmptySource { 
-#	       int32 maxEvents = 4	
-#	}
-        es_module = VolumeBasedMagneticFieldESProducer {}
+
+	es_source magfield = XMLIdealGeometryESSource {
+		  FileInPath GeometryConfiguration ="SimG4Core/Application/test/FieldConfiguration.xml"
+		  #the proper root node is set in the xml file
+		  string rootNodeName=""
+		}
+        es_module = VolumeBasedMagneticFieldESProducer {
+ 	           double findVolumeTolerance = 0.0
+ 	           untracked bool cacheLastVolume = true
+	           untracked bool timerOn = false
+		}
+
+
 	es_source = XMLIdealGeometryESSource {FileInPath GeometryConfiguration="SimTracker/SiStripDigitizer/test/data/allConfiguration.xml" string rootNodeName = ""}
         es_module = TrackerGeometricDetESModule {}
         es_module = TrackerDigiGeometryESModule {}
@@ -51,7 +60,7 @@ process PROD = {
 	   double FedLowThreshold = 2.
 	   double FedHighThreshold = 5.
 
-	   untracked int32 VerbosityLevel = 2		 
+	   untracked int32 VerbosityLevel = 0		 
 	}
                module out = PoolOutputModule {
                untracked string fileName = 'stripdigi.root'

@@ -1,28 +1,57 @@
-process PROD = {
+process PROD  = 
+	{
 
-	source = PoolSource { 
-          untracked string fileName = 'SingleMuonSimHits.root'
-          untracked int32 maxEvents = 5
-          untracked uint32 debugVebosity = 10
-          untracked bool   debugFlag     = true
-	}
+    
+    # NOTE : if one wants to run with the SiStripDigitizer,
+    #        then mag.field in the OscarProducer should be
+    #        turned ON; otherwise it gets (re)created by the
+    #        SiStripDigitizer, which seems to corrupt at all 
+    #        the edm::Event record
+    
+    
+        source = PoolSource {
+                  untracked string fileName = 'SingleMuonSimHits.root'
+                  untracked string catalog = 'PoolFileCatalog.xml'
+                  untracked int32 maxEvents = -1
+                  }
+ 
+         service = SimpleMemoryCheck 
+	 {
+	    untracked int32 ignoreTotal = 1
+	 }
+        service = MessageLogger {
+            vstring destinations = { "cerr" }
+                PSet cerr = { string threshold = "WARNING" }
+        }
 
 
-	es_source magfield = XMLIdealGeometryESSource {
+
+		#NOTE in 0_3_0_pre5 mag field and geomeetry are interfereing again
+		#Magnetic Field
+		es_source magfield = XMLIdealGeometryESSource {
 		  FileInPath GeometryConfiguration ="SimG4Core/Application/test/FieldConfiguration.xml"
 		  #the proper root node is set in the xml file
 		  string rootNodeName=""
 		}
-        es_module = VolumeBasedMagneticFieldESProducer {
+		es_module = VolumeBasedMagneticFieldESProducer {
  	           double findVolumeTolerance = 0.0
  	           untracked bool cacheLastVolume = true
 	           untracked bool timerOn = false
 		}
 
+		#Geometry
+		es_source = XMLIdealGeometryESSource 
+		{ FileInPath GeometryConfiguration = "SimG4Core/Application/test/SimConfiguration.xml"
+		  #the proper root node is set in the xml file
+		  string rootNodeName = ""
+                }
+		es_module = TrackerGeometricDetESModule {}
+		
+		es_module = TrackerDigiGeometryESModule {}
+ 
+                # module o1 = PoolOutputModule { string fileName = "SingleMuonStripDigi.root" }
+		
 
-	es_source = XMLIdealGeometryESSource {FileInPath GeometryConfiguration="SimTracker/SiStripDigitizer/test/data/allConfiguration.xml" string rootNodeName = ""}
-        es_module = TrackerGeometricDetESModule {}
-        es_module = TrackerDigiGeometryESModule {}
 	module stripdigi =  SiStripDigitizer {
            string SimProducer = "SimDigitizer"	
 	   bool APVpeakmode = false
@@ -62,9 +91,7 @@ process PROD = {
 
 	   untracked int32 VerbosityLevel = 0		 
 	}
-               module out = PoolOutputModule {
-               untracked string fileName = 'stripdigi.root'
-        }
-                                                                                                             
-	path p = {stripdigi,out}
-}
+
+		path p1 = { stripdigi }
+		
+	}		

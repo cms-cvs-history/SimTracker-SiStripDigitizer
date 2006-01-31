@@ -1,4 +1,6 @@
-In order to run with the SiStripDigitizer package in this version, you need to do the following:
-
-setenv  Magfield_PATH /afs/cern.ch/cms/Releases/Geometry/Geometry_1_23_0/src/Data/FieldTables/
-setenv CMSSW_DATA_PATH scratch0/CMSSW_0_3_0_pre4/src/
+In order to run the digitizer in normal mode, just execute:
+	 cmsRun -p runStripdigi.txt
+In order to monitor the time consumption, check out FWCore/Services and then execute:
+	 cmsRun -p runStripdigiMemoryTest.txt
+(in this second case no output file is generated).
+In both cases, the input hits are taken from SingleMuonSimHits.root (single muons, 10 GeV).

@@ -1,0 +1,97 @@
+process PROD  = 
+	{
+
+    
+    # NOTE : if one wants to run with the SiStripDigitizer,
+    #        then mag.field in the OscarProducer should be
+    #        turned ON; otherwise it gets (re)created by the
+    #        SiStripDigitizer, which seems to corrupt at all 
+    #        the edm::Event record
+    
+    
+        source = PoolSource {
+                  untracked string fileName = 'SingleMuonSimHits.root'
+                  untracked string catalog = 'PoolFileCatalog.xml'
+                  untracked int32 maxEvents = -1
+                  }
+ 
+         service = SimpleMemoryCheck 
+	 {
+	    untracked int32 ignoreTotal = 1
+	 }
+        service = MessageLogger {
+            vstring destinations = { "cerr" }
+                PSet cerr = { string threshold = "WARNING" }
+        }
+
+
+
+		#NOTE in 0_3_0_pre5 mag field and geomeetry are interfereing again
+		#Magnetic Field
+		es_source magfield = XMLIdealGeometryESSource {
+		  FileInPath GeometryConfiguration ="SimG4Core/Application/test/FieldConfiguration.xml"
+		  #the proper root node is set in the xml file
+		  string rootNodeName=""
+		}
+		es_module = VolumeBasedMagneticFieldESProducer {
+ 	           double findVolumeTolerance = 0.0
+ 	           untracked bool cacheLastVolume = true
+	           untracked bool timerOn = false
+		}
+
+		#Geometry
+		es_source = XMLIdealGeometryESSource 
+		{ FileInPath GeometryConfiguration = "SimG4Core/Application/test/SimConfiguration.xml"
+		  #the proper root node is set in the xml file
+		  string rootNodeName = ""
+                }
+		es_module = TrackerGeometricDetESModule {}
+		
+		es_module = TrackerDigiGeometryESModule {}
+ 
+                # module o1 = PoolOutputModule { string fileName = "SingleMuonStripDigi.root" }
+		
+
+	module stripdigi =  SiStripDigitizer {
+           string SimProducer = "SimDigitizer"	
+	   bool APVpeakmode = false
+	   bool NoNoise = false
+	   bool LandauFluctuations = true
+	   int32 chargeDivisionsPerStrip = 10
+	   double DepletionVoltage = 140.
+	   double AppliedVoltage = 150.
+	   double ChargeMobility = 480.
+	   double Temperature = 297.
+	   bool noDiffusion = false
+	   double ChargeDistributionRMS = 6.5e-10
+	   double GevPerElectron = 3.61e-09
+
+           double ElectronPerAdc = 313.0 
+	   double EquivalentNoiseCharge300um = 2160.
+	   double AdcThreshold = 2.
+	   int32 AdcFullScale = 255
+	   double ThresholdInNoiseUnits = 5.
+           double TanLorentzAnglePerTesla =0.106
+	   int32 AddStripInefficiency = 0
+	   bool AddNoise = true
+	   bool AddNoisyStrips = true
+           double DeltaProductionCut= 0.120425 
+	   bool FluctuateCharge = true
+	   int32 addStripInefficiency = 0
+           double StripEff = -1.0
+           double StripChipEff = -1.0	   
+	   bool MissCalibrate = false
+	   double GainSmearing = 0.0
+	   double OffsetSmearing = 0.0
+	   int32 StripAPV = 128
+	   
+	   int32 FedAlgorithm = 4
+	   double FedLowThreshold = 2.
+	   double FedHighThreshold = 5.
+
+	   untracked int32 VerbosityLevel = 0		 
+	}
+
+		path p1 = { stripdigi }
+		
+	}		

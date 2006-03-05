@@ -25,11 +25,8 @@ process PROD  =
         }
 
 
-
-		#NOTE in 0_3_0_pre5 mag field and geomeetry are interfereing again
-		#Magnetic Field
 		es_source magfield = XMLIdealGeometryESSource {
-		  FileInPath GeometryConfiguration ="SimG4Core/Application/test/FieldConfiguration.xml"
+		  FileInPath GeometryConfiguration ="Geometry/CMSCommonData/data/FieldConfiguration.xml"
 		  #the proper root node is set in the xml file
 		  string rootNodeName=""
 		}
@@ -41,7 +38,7 @@ process PROD  =
 
 		#Geometry
 		es_source = XMLIdealGeometryESSource 
-		{ FileInPath GeometryConfiguration = "SimG4Core/Application/test/SimConfiguration.xml"
+		{ FileInPath GeometryConfiguration = "Geometry/CMSCommonData/data/SimConfiguration.xml"
 		  #the proper root node is set in the xml file
 		  string rootNodeName = ""
                 }
@@ -49,8 +46,6 @@ process PROD  =
 		
 		es_module = TrackerDigiGeometryESModule {}
  
-                # module o1 = PoolOutputModule { string fileName = "SingleMuonStripDigi.root" }
-		
 
 	module stripdigi =  SiStripDigitizer {
            string SimProducer = "SimDigitizer"	

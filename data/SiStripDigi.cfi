@@ -1,0 +1,34 @@
+module stripdigi =  SiStripDigitizer {
+      string SimProducer = "SimDigitizer"	
+      untracked int32 VerbosityLevel = 0		 
+
+###-----SiStripDigitizerAlgorithm 
+     double ElectronPerAdc = 313.0 
+      double AdcThreshold = 2.
+      double EquivalentNoiseCharge300um = 2160.
+      int32 AdcFullScale = 255
+      bool NoNoise = false     # NOTE : turning Noise ON/OFF will make a big change
+#     	 bool NoNoise = true    #        on the size of SiStrip digis container !
+      bool APVpeakmode = false #also in SiLinearChargeDivider
+#--------------------------------
+###-----SiHitDigitizer
+      double DepletionVoltage = 140.
+      double AppliedVoltage = 150.
+      double ChargeMobility = 480.
+      double Temperature = 297.
+      bool noDiffusion = false
+      double ChargeDistributionRMS = 6.5e-10
+      double GevPerElectron = 3.61e-09
+      double TanLorentzAnglePerTesla =0.106
+#--------------------------------------
+###SiLinearChargeDivider
+      bool LandauFluctuations = true
+      int32 chargeDivisionsPerStrip = 10
+      double DeltaProductionCut= 0.120425 
+#---------------------------------------
+###---SiTrivialZeroSuppress
+      int32 FedAlgorithm = 4
+      double FedLowThreshold = 2.
+      double FedHighThreshold = 5.
+#-------------------------------------
+}

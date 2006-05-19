@@ -42,9 +42,7 @@ namespace cms
     virtual void produce(edm::Event& e, const edm::EventSetup& c);
 
   private:
-    //    SiStripDigitizerAlgorithm* stripDigitizer_;
-    std::map<GeomDetType* , SiStripDigitizerAlgorithm*> theAlgoMap; 
-
+    std::map<GeomDetType* , boost::shared_ptr<SiStripDigitizerAlgorithm> > theAlgoMap; 
 
     edm::ParameterSet conf_;
     std::vector<PSimHit> theStripHits;

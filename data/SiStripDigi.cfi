@@ -19,7 +19,7 @@ module stripdigi =  SiStripDigitizer {
       bool noDiffusion = false
       double ChargeDistributionRMS = 6.5e-10
       double GevPerElectron = 3.61e-09
-      double TanLorentzAnglePerTesla =0.106
+      double TanLorentzAnglePerTesla = 0.032
 #--------------------------------------
 ###SiLinearChargeDivider
       bool LandauFluctuations = true

@@ -13,7 +13,7 @@
 //
 // Original Author:  Andrea GIAMMANCO
 //         Created:  Thu Sep 22 14:23:22 CEST 2005
-// $Id: SiStripDigitizer.cc,v 1.13 2006/03/21 14:24:20 fambrogl Exp $
+// $Id: SiStripDigitizer.cc,v 1.14 2006/03/23 09:42:55 fambrogl Exp $
 //
 //
 
@@ -113,22 +113,8 @@ namespace cms
     
     for (std::vector<PSimHit>::iterator isim = theStripHits.begin();
 	 isim != theStripHits.end(); ++isim){
-      /*
-	DetId detid=DetId((*isim).detUnitId());
-	unsigned int subid=detid.subdetId();
-	if ((subid==  StripSubdetector::TIB) || 
-	(subid== StripSubdetector::TOB)  ||
-	(subid==  StripSubdetector::TEC) || 
-	(subid== StripSubdetector::TID)) {
-      */
       SimHitMap[(*isim).detUnitId()].push_back((*isim));
-      //      }
     }
-    
-    
-    // Temporary: generate random collections of pseudo-hits:
-    //PseudoHitContainer pseudoHitContainer;// for some reason this class isn't recognized!!!
-    
     
     edm::ESHandle<TrackerGeometry> pDD;
  
@@ -152,7 +138,7 @@ namespace cms
 	linkcollector.clear();
 	
 	if(theAlgoMap.find(&(sgd->type())) == theAlgoMap.end()) {
-	  theAlgoMap[&(sgd->type())] = new SiStripDigitizerAlgorithm(conf_, sgd);
+	  theAlgoMap[&(sgd->type())] = boost::shared_ptr<SiStripDigitizerAlgorithm>(new SiStripDigitizerAlgorithm(conf_, sgd));
 	}
 	
 	collector= ((theAlgoMap.find(&(sgd->type())))->second)->run(SimHitMap[(*iu)->geographicalId().rawId()], sgd, bfield);
@@ -164,7 +150,6 @@ namespace cms
 	  outputRange.second = collector.end();
 	  output->put(outputRange,(*iu)->geographicalId().rawId());
 	  
-	  //digisimlink
 	  if(SimHitMap[(*iu)->geographicalId().rawId()].size()>0){
 	    StripDigiSimLinkCollection::Range outputlinkRange;
 	    linkcollector= ((theAlgoMap.find(&(sgd->type())))->second)->make_link();
@@ -177,9 +162,6 @@ namespace cms
       }
       
     }
-    
-    
-    
     
     // Step D: write output to file
     iEvent.put(output);

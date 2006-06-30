@@ -9,7 +9,7 @@ module stripdigi =  SiStripDigitizer {
       int32 AdcFullScale = 255
       bool NoNoise = false     # NOTE : turning Noise ON/OFF will make a big change
 #     	 bool NoNoise = true    #        on the size of SiStrip digis container !
-      bool APVpeakmode = false #also in SiLinearChargeDivider
+      bool APVpeakmode = true #also in SiLinearChargeDivider
 #--------------------------------
 ###-----SiHitDigitizer
       double DepletionVoltage = 140.
@@ -25,7 +25,7 @@ module stripdigi =  SiStripDigitizer {
       bool LandauFluctuations = true
       int32 chargeDivisionsPerStrip = 10
       double DeltaProductionCut= 0.120425 
-      untracked double CosmicDelayShift = 0.	
+      untracked double CosmicDelayShift = 11.3	
 #---------------------------------------
 ###---SiTrivialZeroSuppress
       int32 FedAlgorithm = 4

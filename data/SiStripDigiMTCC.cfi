@@ -1,11 +1,11 @@
+include "SimTracker/SiStripDigitizer/data/NoiseParameters.cfi"
+
 module stripdigi =  SiStripDigitizer {
       string SimProducer = "SimDigitizer"	
       untracked int32 VerbosityLevel = 0		 
-
+      using NoiseParameters	
 ###-----SiStripDigitizerAlgorithm 
-     double ElectronPerAdc = 313.0 
       double AdcThreshold = 2.
-      double EquivalentNoiseCharge300um = 2160.
       int32 AdcFullScale = 255
       bool NoNoise = false     # NOTE : turning Noise ON/OFF will make a big change
 #     	 bool NoNoise = true    #        on the size of SiStrip digis container !

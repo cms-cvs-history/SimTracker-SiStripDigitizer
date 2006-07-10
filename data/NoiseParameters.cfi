@@ -1,0 +1,4 @@
+block NoiseParameters = {
+    double ElectronPerAdc      = 313.0
+    double EquivalentNoiseCharge300um = 2160.
+}

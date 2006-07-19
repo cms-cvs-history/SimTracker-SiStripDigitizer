@@ -1,6 +1,8 @@
 include "SimTracker/SiStripDigitizer/data/NoiseParameters.cfi"
 
 module stripdigi =  SiStripDigitizer {
+      vstring ROUList = {"TrackerHitsTIBLowTof","TrackerHitsTIBHighTof",
+	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"}	
       string SimProducer = "SimDigitizer"	
       untracked int32 VerbosityLevel = 0		 
       using NoiseParameters	
@@ -25,7 +27,7 @@ module stripdigi =  SiStripDigitizer {
       bool LandauFluctuations = true
       int32 chargeDivisionsPerStrip = 10
       double DeltaProductionCut= 0.120425 
-      untracked double CosmicDelayShift = 11.3	
+      untracked double CosmicDelayShift = 30.	
 #---------------------------------------
 ###---SiTrivialZeroSuppress
       int32 FedAlgorithm = 4

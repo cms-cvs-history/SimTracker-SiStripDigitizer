@@ -1,6 +1,8 @@
 include "SimTracker/SiStripDigitizer/data/NoiseParameters.cfi"
 
 module stripdigi =  SiStripDigitizer {
+      vstring ROUList = {"TrackerHitsTIBLowTof","TrackerHitsTIBHighTof","TrackerHitsTIDLowTof","TrackerHitsTIDHighTof",
+	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"}	
       string SimProducer = "SimDigitizer"	
       untracked int32 VerbosityLevel = 0		 
       using NoiseParameters	

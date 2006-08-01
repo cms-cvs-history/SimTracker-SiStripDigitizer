@@ -1,6 +1,6 @@
 include "SimTracker/SiStripDigitizer/data/NoiseParameters.cfi"
 
-module stripdigi =  SiStripDigitizer {
+module siStripDigis =  SiStripDigitizer {
       vstring ROUList = {"TrackerHitsTIBLowTof","TrackerHitsTIBHighTof","TrackerHitsTIDLowTof","TrackerHitsTIDHighTof",
 	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"}	
       string SimProducer = "SimDigitizer"	

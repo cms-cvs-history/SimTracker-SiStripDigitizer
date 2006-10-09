@@ -21,7 +21,10 @@ module siStripDigis =  SiStripDigitizer {
       bool noDiffusion = false
       double ChargeDistributionRMS = 6.5e-10
       double GevPerElectron = 3.61e-09
-      double TanLorentzAnglePerTesla = 0.032
+#      double TanLorentzAnglePerTesla = 0.032 #not used anymore, now this quantity is derived from the following:
+      double HoleSaturationVelocity = 8.37e6
+      double HoleBeta = 1.213
+      double HoleRHAllParameter = 0.7
 #--------------------------------------
 ###SiLinearChargeDivider
       bool LandauFluctuations = true

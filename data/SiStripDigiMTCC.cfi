@@ -31,6 +31,8 @@ module siStripDigis =  SiStripDigitizer {
       int32 chargeDivisionsPerStrip = 10
       double DeltaProductionCut= 0.120425 
       untracked double CosmicDelayShift = 30.	
+      double SigmaShapePeak = 52.17
+      double SigmaShapeDeco = 12.06
 #---------------------------------------
 ###---SiTrivialZeroSuppress
       int32 FedAlgorithm = 4

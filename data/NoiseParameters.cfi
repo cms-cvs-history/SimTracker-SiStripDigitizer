@@ -7,5 +7,5 @@ block NoiseParameters = {
     double NoiseStripLengthSlopePeakMode = 51.  #ENC/unit length
     double NoiseStripLengthQuotePeakMode = 630. #ENC
 
-    bool PeakMode = true;
+    bool PeakMode = true
 }

@@ -5,7 +5,9 @@ module siStripDigis =  SiStripDigitizer {
 	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"}	
       string SimProducer = "SimDigitizer"	
       untracked int32 VerbosityLevel = 0		 
+      bool UseCalibDataFromDB  = false
       using NoiseParameters	
+      double BadStripProbability = 0.0
 ###-----SiStripDigitizerAlgorithm 
       double AdcThreshold = 2.
       int32 AdcFullScale = 255

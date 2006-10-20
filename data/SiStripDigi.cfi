@@ -1,13 +1,13 @@
-include "SimTracker/SiStripDigitizer/data/NoiseParameters.cfi"
+include "CommonTools/SiStripZeroSuppression/data/SiStripNoiseService.cfi"
 
 module siStripDigis =  SiStripDigitizer {
       vstring ROUList = {"TrackerHitsTIBLowTof","TrackerHitsTIBHighTof","TrackerHitsTIDLowTof","TrackerHitsTIDHighTof",
 	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"}	
       string SimProducer = "SimDigitizer"	
       untracked int32 VerbosityLevel = 0		 
-      bool UseCalibDataFromDB  = false
-      using NoiseParameters	
-      double BadStripProbability = 0.0
+
+    using SiStripNoiseServiceParameters
+
 ###-----SiStripDigitizerAlgorithm 
       double AdcThreshold = 2.
       int32 AdcFullScale = 255
@@ -42,3 +42,4 @@ module siStripDigis =  SiStripDigitizer {
       double FedHighThreshold = 5.
 #-------------------------------------
 }
+replace siStripDigis.UseCalibDataFromDB  = false

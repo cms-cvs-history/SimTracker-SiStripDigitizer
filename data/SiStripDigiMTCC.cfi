@@ -42,3 +42,4 @@ module siStripDigis =  SiStripDigitizer {
       double FedHighThreshold = 5.
 #-------------------------------------
 }
+replace siStripDigis.UseCalibDataFromDB  = false

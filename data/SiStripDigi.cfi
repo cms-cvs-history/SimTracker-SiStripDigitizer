@@ -11,9 +11,9 @@ module siStripDigis =  SiStripDigitizer {
 ###-----SiStripDigitizerAlgorithm 
       double AdcThreshold = 2.
       int32 AdcFullScale = 255
-      bool NoNoise = false     # NOTE : turning Noise ON/OFF will make a big change
-#     	 bool NoNoise = true    #        on the size of SiStrip digis container !
-      bool APVpeakmode = false #also in SiLinearChargeDivider
+      bool NoNoise = false      # NOTE : turning Noise ON/OFF will make a big change
+#      bool NoNoise = true      #        on the size of SiStrip digis container !
+      bool APVpeakmode = false  # also in SiLinearChargeDivider
 #--------------------------------
 ###-----SiHitDigitizer
       double DepletionVoltage = 140.
@@ -23,7 +23,6 @@ module siStripDigis =  SiStripDigitizer {
       bool noDiffusion = false
       double ChargeDistributionRMS = 6.5e-10
       double GevPerElectron = 3.61e-09
-#      double TanLorentzAnglePerTesla = 0.032 #not used anymore, now this quantity is derived from the following:
       double HoleSaturationVelocity = 8.37e6
       double HoleBeta = 1.213
       double HoleRHAllParameter = 0.7

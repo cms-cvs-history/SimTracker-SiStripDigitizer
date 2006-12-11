@@ -35,6 +35,9 @@ module siStripDigis =  SiStripDigitizer {
       double SigmaShapePeak = 52.17
       double SigmaShapeDeco = 12.06
 #---------------------------------------
+###SiTrivialInduceChargeOnStrips
+      vdouble CouplingCostant = {0.76,0.12}
+#---------------------------------------	
 ###---SiTrivialZeroSuppress
       int32 FedAlgorithm = 4
       double FedLowThreshold = 2.

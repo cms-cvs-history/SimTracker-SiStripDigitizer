@@ -7,7 +7,7 @@ module siStripDigis =  SiStripDigitizer {
       untracked int32 VerbosityLevel = 0		 
 
     using SiStripNoiseServiceParameters
-
+    bool UseLACalibrationFromDB=false
 ###-----SiStripDigitizerAlgorithm 
       double AdcThreshold = 2.
       int32 AdcFullScale = 255

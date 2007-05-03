@@ -45,3 +45,4 @@ module siStripDigis =  SiStripDigitizer {
 #-------------------------------------
 }
 replace siStripDigis.UseCalibDataFromDB  = false
+replace siStripDigis.PeakMode = true

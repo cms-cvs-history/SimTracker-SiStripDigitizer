@@ -8,6 +8,8 @@ module siStripDigis =  SiStripDigitizer {
 
     using SiStripNoiseServiceParameters
     bool UseLACalibrationFromDB=false
+    bool UseGainFromDB=false
+
 ###-----SiStripDigitizerAlgorithm 
       double AdcThreshold = 2.
       int32 AdcFullScale = 255

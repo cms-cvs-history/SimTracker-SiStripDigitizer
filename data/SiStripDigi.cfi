@@ -5,6 +5,7 @@ module siStripDigis =  SiStripDigitizer {
     untracked int32 VerbosityLevel = 0		 
     
     ###-----SiStripDigitizerAlgorithm 
+    double electronPerAdc = 250.0
     double NoiseSigmaThreshold = 2.
     int32 AdcFullScale = 255
     bool Noise = true           # NOTE : turning Noise ON/OFF will make a big change
@@ -13,9 +14,6 @@ module siStripDigis =  SiStripDigitizer {
     #--------------------------------
     ###---ZeroSuppression
     int32 FedAlgorithm     = 4
-    uint32  PedestalValue  = 30
-    double  LowThValue     = 2
-    double  HighThValue    = 5
     #-------------------------------------
     ###-----SiHitDigitizer
     double DepletionVoltage = 140.

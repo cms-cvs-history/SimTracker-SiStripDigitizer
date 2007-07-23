@@ -13,7 +13,7 @@
 //
 // Original Author:  Andrea GIAMMANCO
 //         Created:  Thu Sep 22 14:23:22 CEST 2005
-// $Id: SiStripDigitizer.cc,v 1.26 2006/11/13 14:41:22 fambrogl Exp $
+// $Id: SiStripDigitizer.cc,v 1.27 2007/02/05 11:37:17 fambrogl Exp $
 //
 //
 
@@ -57,101 +57,120 @@
 #include "DataFormats/SiStripDetId/interface/StripSubdetector.h"
 
 //#include "SimGeneral/HepPDTRecord/interface/ParticleDataTable.h"
+//needed for DB
+//ES Data
+#include "CalibTracker/Records/interface/SiStripDetCablingRcd.h"
 
-SiStripDigitizer::SiStripDigitizer(const edm::ParameterSet& conf) : 
-  conf_(conf),SiStripNoiseService_(conf)
-{
-  std::string alias ( conf.getParameter<std::string>("@module_label") );
-  produces<edm::DetSetVector<SiStripDigi> >().setBranchAlias( alias );
-  produces<edm::DetSetVector<StripDigiSimLink> >().setBranchAlias ( alias + "siStripDigiSimLink");
-  trackerContainers.clear();
-  trackerContainers = conf.getParameter<std::vector<std::string> >("ROUList");
+using namespace std;
+
+namespace cms {
+  SiStripDigitizer::SiStripDigitizer(const edm::ParameterSet& conf) : 
+    conf_(conf),SiStripNoiseService_(conf)
+  {
+    std::string alias ( conf.getParameter<std::string>("@module_label") );
+    produces<edm::DetSetVector<SiStripDigi> >().setBranchAlias( alias );
+    produces<edm::DetSetVector<StripDigiSimLink> >().setBranchAlias ( alias + "siStripDigiSimLink");
+    trackerContainers.clear();
+    trackerContainers = conf.getParameter<std::vector<std::string> >("ROUList");
+    useConfFromDB = conf.getParameter<bool>("ConfFromDB");
   }
 
-// Virtual destructor needed.
-SiStripDigitizer::~SiStripDigitizer() { }  
+  // Virtual destructor needed.
+  SiStripDigitizer::~SiStripDigitizer() { }  
 
-// Functions that gets called by framework every event
-void SiStripDigitizer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
-{
+  // Functions that gets called by framework every event
+  void SiStripDigitizer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
+  {
 
 
-  // Step A: Get Inputs
-  edm::Handle<CrossingFrame> cf;
-  iEvent.getByType(cf);
+    // Step A: Get Inputs
+    edm::Handle<CrossingFrame> cf;
+    iEvent.getByType(cf);
+    if(useConfFromDB){
+      iSetup.get<SiStripDetCablingRcd>().get( SiStripDetCabling_ );
+      SiStripDetCabling_->addConnected(theDetIdList);
+    }
 
-  //  edm::ESHandle < ParticleDataTable > pdt;
-  //  iSetup.getData( pdt );
+    //  edm::ESHandle < ParticleDataTable > pdt;
+    //  iSetup.getData( pdt );
   
-  std::auto_ptr<MixCollection<PSimHit> > allTrackerHits(new MixCollection<PSimHit>(cf.product(),trackerContainers));
+//     std::auto_ptr<MixCollection<PSimHit> > allTrackerHits(new MixCollection<PSimHit>(cf.product(),trackerContainers));
   
-  //Loop on PSimHit
-  SimHitMap.clear();
+    // Temporary collection of all the hits
+    std::auto_ptr<MixCollection<PSimHit> > tempAllTrackerHits(new MixCollection<PSimHit>(cf.product(),trackerContainers));
+
+    //Loop on PSimHit
+    SimHitMap.clear();
   
-  MixCollection<PSimHit>::iterator isim;
-  for (isim=allTrackerHits->begin(); isim!= allTrackerHits->end();isim++) {
-    SimHitMap[(*isim).detUnitId()].push_back((*isim));
-  }
+    // Modify here to have the hits corresponding only to active modules from the cabling map
+    std::vector<PSimHit> allTrackerHits = SimHitSelectorFromDB_.getSimHit(tempAllTrackerHits,theDetIdList);
+
+    std::vector<PSimHit>::iterator isim;
+    for (isim=allTrackerHits.begin(); isim!= allTrackerHits.end();++isim) {
+      SimHitMap[(*isim).detUnitId()].push_back((*isim));
+    }
+
+//     MixCollection<PSimHit>::iterator isim;
+//     for (isim=allTrackerHits->begin(); isim!= allTrackerHits->end();isim++) {
+//       SimHitMap[(*isim).detUnitId()].push_back((*isim));
+//     }
   
-  edm::ESHandle<TrackerGeometry> pDD;
+    edm::ESHandle<TrackerGeometry> pDD;
   
-  iSetup.get<TrackerDigiGeometryRecord> ().get (pDD);
+    iSetup.get<TrackerDigiGeometryRecord> ().get (pDD);
   
-  edm::ESHandle<MagneticField> pSetup;
-  iSetup.get<IdealMagneticFieldRecord>().get(pSetup);
+    edm::ESHandle<MagneticField> pSetup;
+    iSetup.get<IdealMagneticFieldRecord>().get(pSetup);
   
-  SiStripNoiseService_.setESObjects(iSetup);
+    SiStripNoiseService_.setESObjects(iSetup);
   
-  // Step B: LOOP on StripGeomDetUnit //
+    // Step B: LOOP on StripGeomDetUnit //
   
-  theAlgoMap.clear();
-  theDigiVector.reserve(10000);
-  theDigiVector.clear();
+    theAlgoMap.clear();
+    theDigiVector.reserve(10000);
+    theDigiVector.clear();
   
-  theDigiLinkVector.reserve(10000);
-  theDigiLinkVector.clear();
+    theDigiLinkVector.reserve(10000);
+    theDigiLinkVector.clear();
   
-  for(TrackingGeometry::DetUnitContainer::const_iterator iu = pDD->detUnits().begin(); iu != pDD->detUnits().end(); iu ++){
+    for(TrackingGeometry::DetUnitContainer::const_iterator iu = pDD->detUnits().begin(); iu != pDD->detUnits().end(); ++iu){
     
-    GlobalVector bfield=pSetup->inTesla((*iu)->surface().position());
+      GlobalVector bfield=pSetup->inTesla((*iu)->surface().position());
     
-    StripGeomDetUnit* sgd = dynamic_cast<StripGeomDetUnit*>((*iu));
-    if (sgd != 0){
+      StripGeomDetUnit* sgd = dynamic_cast<StripGeomDetUnit*>((*iu));
+      if (sgd != 0){
       
-      edm::DetSet<SiStripDigi> collector((*iu)->geographicalId().rawId());
-      edm::DetSet<StripDigiSimLink> linkcollector((*iu)->geographicalId().rawId());
-      uint32_t idForNoise = (*iu)->geographicalId().rawId();
-      if(theAlgoMap.find(&(sgd->type())) == theAlgoMap.end()) {
-	theAlgoMap[&(sgd->type())] = boost::shared_ptr<SiStripDigitizerAlgorithm>(new SiStripDigitizerAlgorithm(conf_, sgd,
-														idForNoise,&SiStripNoiseService_));
-      }
+	edm::DetSet<SiStripDigi> collector((*iu)->geographicalId().rawId());
+	edm::DetSet<StripDigiSimLink> linkcollector((*iu)->geographicalId().rawId());
+	uint32_t idForNoise = (*iu)->geographicalId().rawId();
+	if(theAlgoMap.find(&(sgd->type())) == theAlgoMap.end()) {
+	  theAlgoMap[&(sgd->type())] = boost::shared_ptr<SiStripDigitizerAlgorithm>(new SiStripDigitizerAlgorithm(conf_, sgd,
+														  idForNoise,&SiStripNoiseService_));
+	}
       
-      collector.data= ((theAlgoMap.find(&(sgd->type())))->second)->run(SimHitMap[(*iu)->geographicalId().rawId()], sgd, bfield);
+	collector.data= ((theAlgoMap.find(&(sgd->type())))->second)->run(SimHitMap[(*iu)->geographicalId().rawId()], sgd, bfield);
       
-      if (collector.data.size()>0){
+	if (collector.data.size()>0){
 	
-	theDigiVector.push_back(collector);
+	  theDigiVector.push_back(collector);
 	
-	//digisimlink
-	if(SimHitMap[(*iu)->geographicalId().rawId()].size()>0){
+	  //digisimlink
+	  if(SimHitMap[(*iu)->geographicalId().rawId()].size()>0){
 	    linkcollector.data = ((theAlgoMap.find(&(sgd->type())))->second)->make_link();
 	    if (linkcollector.data.size()>0)   theDigiLinkVector.push_back(linkcollector);
+	  }
 	}
       }
     }
+  
+    // Step C: create empty output collection
+    std::auto_ptr<edm::DetSetVector<SiStripDigi> > output(new edm::DetSetVector<SiStripDigi>(theDigiVector) );
+    std::auto_ptr<edm::DetSetVector<StripDigiSimLink> > outputlink(new edm::DetSetVector<StripDigiSimLink>(theDigiLinkVector) );
+
+    // Step D: write output to file
+    iEvent.put(output);
+    iEvent.put(outputlink); 
   }
-  
-  // Step C: create empty output collection
-  std::auto_ptr<edm::DetSetVector<SiStripDigi> > output(new edm::DetSetVector<SiStripDigi>(theDigiVector) );
-  std::auto_ptr<edm::DetSetVector<StripDigiSimLink> > outputlink(new edm::DetSetVector<StripDigiSimLink>(theDigiLinkVector) );
-  
-  
-  
-  // Step D: write output to file
-  iEvent.put(output);
-  iEvent.put(outputlink);
-  
-  
 }
 //define this as a plug-in
 

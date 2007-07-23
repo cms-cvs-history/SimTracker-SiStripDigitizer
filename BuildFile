@@ -18,6 +18,15 @@
 <use name=MagneticField/GeomBuilder>
 <use name=MagneticField/VolumeBasedEngine>
 <use name=CommonTools/SiStripZeroSuppression>
+
+<use name=CondFormats/DataRecord>
+<use name=CondFormats/SiStripObjects>
+<use name=CalibTracker/Records>
+<use name=CalibFormats/SiStripObjects>
+<use name=CondCore/DBCommon>
+<use name=CondCore/ESSources>
+
+
 <flags SEAL_PLUGIN_NAME="SimTrackerSiStripDigitizer">
 <export>
    <lib name=SimTrackerSiStripDigitizer>
@@ -41,4 +50,11 @@
    <use name=MagneticField/VolumeBasedEngine>
    <use name=Geometry/Surface>
    <use name=CommonTools/SiStripZeroSuppression>
+
+   <use name=CondFormats/DataRecord>
+   <use name=CondFormats/SiStripObjects>
+   <use name=CalibTracker/Records>
+   <use name=CalibFormats/SiStripObjects>
+   <use name=CondCore/DBCommon>
+   <use name=CondCore/ESSources>
 </export>

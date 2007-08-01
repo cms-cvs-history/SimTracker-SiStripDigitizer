@@ -23,16 +23,6 @@ void SiTrivialZeroSuppress::initParams(edm::ParameterSet const& conf_)
   theFEDlowThresh  = lowthreshConf * noiseInAdc;
   theFEDhighThresh = highthreshConf * noiseInAdc;
 
-  theNextFEDlowThresh  = theFEDlowThresh;
-  theNext2FEDlowThresh = theFEDlowThresh;
-  thePrevFEDlowThresh  = theFEDlowThresh;
-  thePrev2FEDlowThresh = theFEDlowThresh;
-  theNeighFEDlowThresh = theFEDlowThresh;
-  
-  theNextFEDhighThresh  = theFEDhighThresh;
-  thePrevFEDhighThresh  = theFEDhighThresh;
-  theNeighFEDhighThresh = theFEDhighThresh;
-  
   //Check zero suppress algorithm
   if (theFEDalgorithm < 1 || theFEDalgorithm > theNumFEDalgos) {
     edm::LogError("StripDigiInfo")<<"SiTrivialZeroSuppress FATAL ERROR: Unknown zero suppress algorithm "<<theFEDalgorithm;
@@ -78,6 +68,17 @@ SiZeroSuppress::DigitalMapType SiTrivialZeroSuppress::trkFEDclusterizer(const Di
     int adcNext  = -9999;
     int adcPrev2 = -9999;
     int adcNext2 = -9999;
+
+    theNextFEDlowThresh  = theFEDlowThresh;
+    theNext2FEDlowThresh = theFEDlowThresh;
+    thePrevFEDlowThresh  = theFEDlowThresh;
+    thePrev2FEDlowThresh = theFEDlowThresh;
+    theNeighFEDlowThresh = theFEDlowThresh;
+    
+    theNextFEDhighThresh  = theFEDhighThresh;
+    thePrevFEDhighThresh  = theFEDhighThresh;
+    theNeighFEDhighThresh = theFEDhighThresh;
+  
 
     if ( ((strip)%128) == 127){
       adcNext = 0;

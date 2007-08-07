@@ -39,7 +39,7 @@ SiTrivialDigitalConverter::convert(const signal_map_type& analogSignal){
 
 int SiTrivialDigitalConverter::truncate(float in_adc) {
  
-  int adc = int(in_adc);
+  int adc = int(in_adc+0.5);
   if (adc > theMaxADC) adc = theMaxADC;
   
   return adc;

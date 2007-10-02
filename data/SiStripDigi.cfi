@@ -1,9 +1,12 @@
 module siStripDigis =  SiStripDigitizer {
-    vstring ROUList = {"TrackerHitsTIBLowTof","TrackerHitsTIBHighTof","TrackerHitsTIDLowTof","TrackerHitsTIDHighTof",
-	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"}	
+    vstring ROUList = {
+	"TrackerHitsTIBLowTof","TrackerHitsTIBHighTof","TrackerHitsTIDLowTof","TrackerHitsTIDHighTof",
+	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"
+    }	
     string SimProducer = "SimDigitizer"	
     untracked int32 VerbosityLevel = 0		 
-    
+    ###-----SiStripDigitizer 
+    bool TrackerConfigurationFromDB = false
     ###-----SiStripDigitizerAlgorithm 
     double electronPerAdc = 250.0
     double NoiseSigmaThreshold = 2.
@@ -11,6 +14,9 @@ module siStripDigis =  SiStripDigitizer {
     bool Noise = true           # NOTE : turning Noise ON/OFF will make a big change
     bool ZeroSuppression = true 
     bool APVpeakmode = false    # also in SiLinearChargeDivider
+    double TOFCutForPeak = 100.0
+    double TOFCutForDeconvolution = 50.0
+    untracked double CosmicDelayShift = 0.
     #--------------------------------
     ###---ZeroSuppression
     int32 FedAlgorithm     = 4
@@ -28,7 +34,6 @@ module siStripDigis =  SiStripDigitizer {
     bool LandauFluctuations = true
     int32 chargeDivisionsPerStrip = 10
     double DeltaProductionCut= 0.120425 
-    untracked double CosmicDelayShift = 0.
     double SigmaShapePeak = 52.17
     double SigmaShapeDeco = 12.06
     #---------------------------------------

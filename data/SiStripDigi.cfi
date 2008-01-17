@@ -1,4 +1,12 @@
 module siStripDigis =  SiStripDigitizer {
+
+    PSet DigiModeList = {
+	string ZSDigi = "ZeroSuppressed"
+	string VRDigi = "VirginRaw"
+	string PRDigi = "ProcessedRaw"
+	string SCDigi = "ScopeMode"
+    }
+
     vstring ROUList = {"TrackerHitsTIBLowTof","TrackerHitsTIBHighTof","TrackerHitsTIDLowTof","TrackerHitsTIDHighTof",
 	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"}	
     string SimProducer = "SimDigitizer"	

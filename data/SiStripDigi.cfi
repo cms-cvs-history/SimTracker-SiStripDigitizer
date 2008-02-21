@@ -19,7 +19,7 @@ module siStripDigis =  SiStripDigitizer {
     int32 AdcFullScale = 255
     bool Noise = true           # NOTE : turning Noise ON/OFF will make a big change
     bool ZeroSuppression = true 
-    bool APVpeakmode = false    # also in SiLinearChargeDivider
+    bool APVpeakmode = false
     double TOFCutForPeak = 100.0
     double TOFCutForDeconvolution = 50.0
     untracked double CosmicDelayShift = 0.
@@ -45,6 +45,6 @@ module siStripDigis =  SiStripDigitizer {
     #---------------------------------------
     ###SiTrivialInduceChargeOnStrips
     vdouble CouplingCostantDeco = {0.76,0.12}
-    vdouble CouplingCostantPeak = {0.76,0.12}
+    vdouble CouplingCostantPeak = {0.94,0.03}
     #---------------------------------------
 }

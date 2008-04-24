@@ -1,4 +1,4 @@
-module siStripDigis =  SiStripDigitizer {
+module simSiStripDigis =  SiStripDigitizer {
       vstring ROUList = {"TrackerHitsTIBLowTof","TrackerHitsTIBHighTof",
 	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"}	
       string SimProducer = "SimDigitizer"	

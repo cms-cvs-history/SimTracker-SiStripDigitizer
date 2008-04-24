@@ -1,4 +1,4 @@
 # Silicon Strip Digitizer running with APV Mode Peak
 include "SimTracker/SiStripDigitizer/data/SiStripDigi.cfi"
 
-replace siStripDigis.APVpeakmode = true
+replace simSiStripDigis.APVpeakmode = true

@@ -1,4 +1,4 @@
-module siStripDigis =  SiStripDigitizer {
+module simSiStripDigis =  SiStripDigitizer {
 
     PSet DigiModeList = {
 	string ZSDigi = "ZeroSuppressed"

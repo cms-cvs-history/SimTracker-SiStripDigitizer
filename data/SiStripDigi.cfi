@@ -7,8 +7,12 @@ module simSiStripDigis =  SiStripDigitizer {
 	string SCDigi = "ScopeMode"
     }
 
-    vstring ROUList = {"TrackerHitsTIBLowTof","TrackerHitsTIBHighTof","TrackerHitsTIDLowTof","TrackerHitsTIDHighTof",
-	"TrackerHitsTOBLowTof","TrackerHitsTOBHighTof","TrackerHitsTECLowTof","TrackerHitsTECHighTof"}	
+    vstring ROUList = {
+    "g4SimHitsTrackerHitsTIBLowTof","g4SimHitsTrackerHitsTIBHighTof",
+    "g4SimHitsTrackerHitsTIDLowTof","g4SimHitsTrackerHitsTIDHighTof",
+    "g4SimHitsTrackerHitsTOBLowTof","g4SimHitsTrackerHitsTOBHighTof",
+    "g4SimHitsTrackerHitsTECLowTof","g4SimHitsTrackerHitsTECHighTof"}
+	
     string SimProducer = "SimDigitizer"	
     untracked int32 VerbosityLevel = 0		 
     ###-----SiStripDigitizer 

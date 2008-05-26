@@ -48,7 +48,24 @@ module simSiStripDigis =  SiStripDigitizer {
     double SigmaShapeDeco = 12.06
     #---------------------------------------
     ###SiTrivialInduceChargeOnStrips
-    vdouble CouplingCostantDeco = {0.76,0.12}
-    vdouble CouplingCostantPeak = {0.94,0.03}
+    # DECOnvolution Mode
+    # TIB
+    vdouble CouplingCostantDecoTIB = {0.76,0.12}
+    # TID
+    vdouble CouplingCostantDecoTID = {0.76,0.12}
+    # TOB
+    vdouble CouplingCostantDecoTOB = {0.76,0.12}
+    # TEC
+    vdouble CouplingCostantDecoTEC = {0.76,0.12}
+    #
+    # PEAK Mode
+    # TIB
+    vdouble CouplingCostantPeakTIB = {0.94,0.03}
+    # TID
+    vdouble CouplingCostantPeakTID = {0.94,0.03}
+    # TOB
+    vdouble CouplingCostantPeakTOB = {0.94,0.03}
+    # TEC
+    vdouble CouplingCostantPeakTEC = {0.94,0.03}
     #---------------------------------------
 }

@@ -17,6 +17,7 @@ module simSiStripDigis =  SiStripDigitizer {
     untracked int32 VerbosityLevel = 0		 
     ###-----SiStripDigitizer 
     bool TrackerConfigurationFromDB = false
+    string LorentzAngle = "fake"
     ###-----SiStripDigitizerAlgorithm 
     double electronPerAdc = 250.0
     double NoiseSigmaThreshold = 2.
@@ -68,4 +69,5 @@ module simSiStripDigis =  SiStripDigitizer {
     # TEC
     vdouble CouplingCostantPeakTEC = {0.94,0.03}
     #---------------------------------------
+
 }

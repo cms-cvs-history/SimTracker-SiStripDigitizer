@@ -13,6 +13,7 @@ module simSiStripDigis =  SiStripDigitizer {
     "g4SimHitsTrackerHitsTOBLowTof","g4SimHitsTrackerHitsTOBHighTof",
     "g4SimHitsTrackerHitsTECLowTof","g4SimHitsTrackerHitsTECHighTof"}
 	
+    string GeometryType = "idealForDigi"	
     string SimProducer = "SimDigitizer"	
     untracked int32 VerbosityLevel = 0		 
     ###-----SiStripDigitizer 

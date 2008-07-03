@@ -15,6 +15,7 @@ module simSiStripDigis =  SiStripDigitizer {
 	
     string GeometryType = "idealForDigi"	
     string LorentzAngle = "fake"
+    string Gain = "fake"
     string SimProducer = "SimDigitizer"	
     untracked int32 VerbosityLevel = 0		 
     ###-----SiStripDigitizer 

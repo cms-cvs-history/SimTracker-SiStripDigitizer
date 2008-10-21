@@ -1,4 +1,0 @@
-# Silicon Strip Digitizer running with APV Mode Deconvolution
-include "SimTracker/SiStripDigitizer/data/SiStripDigi.cfi"
-
-replace simSiStripDigis.APVpeakmode = false

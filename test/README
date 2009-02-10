@@ -1,6 +1,0 @@
-In order to run the digitizer in normal mode, just execute:
-	 cmsRun -p runStripdigi.txt
-In order to monitor the time consumption, check out FWCore/Services and then execute:
-	 cmsRun -p runStripdigiMemoryTest.txt
-(in this second case no output file is generated).
-In both cases, the input hits are taken from SingleMuonSimHits.root (single muons, 10 GeV).

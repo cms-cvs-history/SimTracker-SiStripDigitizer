@@ -78,7 +78,7 @@ SiStripDigitizerAlgorithm::SiStripDigitizerAlgorithm(const edm::ParameterSet& co
             << " theStripInefficiency_ = " << theStripInefficiency_[0] << " "
             << " " << theStripInefficiency_[1] << " "
             << " " << theStripInefficiency_[2] << " "
-            << " " << theStripInefficiency_[3];
+            << " " << theStripInefficiency_[3];  
 }
 
 SiStripDigitizerAlgorithm::~SiStripDigitizerAlgorithm(){
@@ -126,9 +126,9 @@ void SiStripDigitizerAlgorithm::run(edm::DetSet<SiStripDigi>& outdigi,
 
      
   // local amplitude of detector channels (from processed PSimHit)
-  locAmpl.clear();
+//  locAmpl.clear();
   detAmpl.clear();
-  locAmpl.insert(locAmpl.begin(),numStrips,0.);
+//  locAmpl.insert(locAmpl.begin(),numStrips,0.);
   // total amplitude of detector channels
   detAmpl.insert(detAmpl.begin(),numStrips,0.);
 
@@ -159,6 +159,8 @@ void SiStripDigitizerAlgorithm::run(edm::DetSet<SiStripDigi>& outdigi,
   //if(theFlatDistribution->fire()>inefficiency) {
   for (;simHitIter != simHitIterEnd; ++simHitIter) {
     if(!do_inefficiency || (do_inefficiency && theFlatDistribution->fire()>inefficiency2use) ) {
+      locAmpl.clear();
+      locAmpl.insert(locAmpl.begin(),numStrips,0.);
       // check TOF
       if ( std::fabs( ((*simHitIter).first)->tof() - cosmicShift - det->surface().toGlobal(((*simHitIter).first)->localPosition()).mag()/30.) < tofCut && ((*simHitIter).first)->energyLoss()>0) {
         localFirstChannel = numStrips;
@@ -215,7 +217,7 @@ void SiStripDigitizerAlgorithm::run(edm::DetSet<SiStripDigi>& outdigi,
   
   if(zeroSuppression){
     if(noise){
-	  int RefStrip = 0; //int(numStrips/2.);
+	  int RefStrip = int(numStrips/2.);
 	  while(RefStrip<numStrips&&badChannels[RefStrip]){ //if the refstrip is bad, I move up to when I don't find it
 	  	RefStrip++;
 	  }

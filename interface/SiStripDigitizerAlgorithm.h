@@ -13,7 +13,6 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "SimDataFormats/TrackingHit/interface/PSimHit.h"
-#include "SimDataFormats/TrackerDigiSimLink/interface/StripDigiSimLink.h"
 #include "DataFormats/DetId/interface/DetId.h"
 #include "DataFormats/Common/interface/DetSet.h"
 #include "DataFormats/SiStripDigi/interface/SiStripDigi.h"
@@ -26,6 +25,7 @@
 #include "SimTracker/SiStripDigitizer/interface/SiTrivialDigitalConverter.h"
 #include "SimTracker/SiStripDigitizer/interface/SiGaussianTailNoiseAdder.h"
 #include "SimTracker/SiStripDigitizer/interface/SiHitDigitizer.h"
+#include "SimTracker/SiStripDigitizer/interface/SiPileUpSignals.h"
 #include "Geometry/CommonDetUnit/interface/GeomDetUnit.h"
 #include "Geometry/TrackerGeometryBuilder/interface/StripGeomDetUnit.h"
 #include "Geometry/CommonTopologies/interface/StripTopology.h"
@@ -75,18 +75,6 @@ class SiStripDigitizerAlgorithm {
                 edm::ESHandle<SiStripThreshold>&, 
                 edm::ESHandle<SiStripNoises>&,
                 edm::ESHandle<SiStripPedestals>&);
-
-/*
-  // Runs the algorithm
-  void  run(edm::DetSet<SiStripDigi>&, edm::DetSet<SiStripRawDigi>&,
-            const std::vector<std::pair<const PSimHit*, int > >  &, 
-            StripGeomDetUnit *, GlobalVector, float, 
-            edm::ESHandle<SiStripGain> &, edm::ESHandle<SiStripThreshold> &, 
-            edm::ESHandle<SiStripNoises> &, edm::ESHandle<SiStripPedestals> &, edm::ESHandle<SiStripBadStrip> &);
-
-  // digisimlink
-  std::vector<StripDigiSimLink> make_link() { return link_coll; }
-*/
 
   // ParticleDataTable
   void setParticleDataTable(const ParticleDataTable * pardt) {
@@ -141,17 +129,6 @@ class SiStripDigitizerAlgorithm {
   // ESHandles
   edm::ESHandle<SiStripLorentzAngle> lorentzAngleHandle;
 
-  void push_link(const DigitalVecType&,
-		 const SignalMapType&,
-		 const std::vector<double>&,
-		 unsigned int,
-		 std::vector<StripDigiSimLink>&);
-  
-  void push_link_raw(const DigitalRawVecType&,
-		     const SignalMapType&,
-		     const std::vector<double>&,
-		     unsigned int,
-		     std::vector<StripDigiSimLink>&);
 };
 
 #endif

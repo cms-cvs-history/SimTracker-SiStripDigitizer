@@ -30,7 +30,7 @@ SiStripDigitizerAlgorithm::SiStripDigitizerAlgorithm(const edm::ParameterSet& co
   cmnRMStid(conf.getParameter<double>("cmnRMStid")),
   cmnRMStec(conf.getParameter<double>("cmnRMStec")),
   APVSaturationProb(conf.getParameter<double>("APVSaturationProb")),
-  makeDigiSimLinks_(conf.getUntrackedParameter<bool>("makeDigiSimLinks", true)),
+  makeDigiSimLinks_(conf.getUntrackedParameter<bool>("makeDigiSimLinks", false)),
   peakMode(conf.getParameter<bool>("APVpeakmode")),
   noise(conf.getParameter<bool>("Noise")),
   RealPedestals(conf.getParameter<bool>("RealPedestals")), 
@@ -199,8 +199,6 @@ SiStripDigitizerAlgorithm::digitize(
   SiStripApvGain::Range detGainRange = gainHandle->getRange(detID);
   SiStripPedestals::Range detPedestalRange = pedestalHandle->getRange(detID);
 
-  std::vector<StripDigiSimLink> link_coll;
-
 // -----------------------------------------------------------
 
   auto& firstChannelWithSignal = firstChannelsWithSignal[detID];
@@ -220,7 +218,6 @@ SiStripDigitizerAlgorithm::digitize(
 	}
     DigitalVecType digis;
     theSiZeroSuppress->suppress(theSiDigitalConverter->convert(detAmpl, gainHandle, detID), digis, detID,noiseHandle,thresholdHandle);
-    //push_link(digis, theSignal, theCounterLink, detAmpl,detID, link_coll);
     outdigi.data = digis;
   }
   
@@ -321,89 +318,8 @@ SiStripDigitizerAlgorithm::digitize(
     //}else{							 
     
     DigitalRawVecType rawdigis = theSiDigitalConverter->convertRaw(detAmpl, gainHandle, detID);
-    //push_link_raw(rawdigis, theSignal, theCounterLink, detAmpl, detID, link_coll);
     outrawdigi.data = rawdigis;
 	
 	//}
-  }
-}
-
-void SiStripDigitizerAlgorithm::push_link(const DigitalVecType &digis,
-					  const SignalMapType& htd,
-					  const std::vector<double>& afterNoise,
-					  unsigned int detID,
-					  std::vector<StripDigiSimLink>& link_coll) {
-  link_coll.clear();  
-  for ( DigitalVecType::const_iterator i=digis.begin(); i!=digis.end(); i++) {
-    // Instead of checking the validity of the links against the digis,
-    //  let's loop over digis and push the corresponding link
-    SignalMapType::const_iterator mi(htd.find(i->strip()));  
-    if (mi == htd.end()) continue;
-/*
-    std::map<const PSimHit *, Amplitude> totalAmplitudePerSimHit;
-    for (std::vector < std::pair < const PSimHit*, Amplitude > >::const_iterator simul = 
-	   (*mi).second.begin() ; simul != (*mi).second.end(); simul ++){
-      totalAmplitudePerSimHit[(*simul).first] += (*simul).second;
-    }
-    
-    //--- include the noise as well
-    double totalAmplitude1 = afterNoise[(*mi).first];
-    
-    //--- digisimlink
-    for (std::map<const PSimHit *, Amplitude>::const_iterator iter = totalAmplitudePerSimHit.begin(); 
-	 iter != totalAmplitudePerSimHit.end(); iter++){
-      float threshold = 0.;
-      float fraction = (*iter).second/totalAmplitude1;
-      if ( fraction >= threshold) {
-	// Noise fluctuation could make fraction>1. Unphysical, set it by hand = 1.
-	if(fraction > 1.) fraction = 1.;
-	link_coll.push_back(StripDigiSimLink( (*mi).first, //channel
-					      ((*iter).first)->trackId(), //simhit trackId
-					      ((*iter).first)->eventId(), //simhit eventId
-					      fraction)); //fraction
-      }
-    }
-*/
-  }
-}
-
-void SiStripDigitizerAlgorithm::push_link_raw(const DigitalRawVecType &digis,
-					      const SignalMapType& htd,
-					      const std::vector<double>& afterNoise,
-					      unsigned int detID,
-					      std::vector<StripDigiSimLink>& link_coll) {
-  link_coll.clear();  
-  int nstrip = -1;
-  for ( DigitalRawVecType::const_iterator i=digis.begin(); i!=digis.end(); i++) {
-    nstrip++;
-    // Instead of checking the validity of the links against the digis,
-    //  let's loop over digis and push the corresponding link
-    SignalMapType::const_iterator mi(htd.find(nstrip));  
-    if (mi == htd.end()) continue;
-/*
-    std::map<const PSimHit *, Amplitude> totalAmplitudePerSimHit;
-    for (std::vector < std::pair < const PSimHit*, Amplitude > >::const_iterator simul = 
-	   (*mi).second.begin() ; simul != (*mi).second.end(); simul ++){
-      totalAmplitudePerSimHit[(*simul).first] += (*simul).second;
-    }
-    
-    //--- include the noise as well
-    double totalAmplitude1 = afterNoise[(*mi).first];
-    
-    //--- digisimlink
-    for (std::map<const PSimHit *, Amplitude>::const_iterator iter = totalAmplitudePerSimHit.begin(); 
-	 iter != totalAmplitudePerSimHit.end(); iter++){
-      float threshold = 0.;
-      float fraction = (*iter).second/totalAmplitude1;
-      if (fraction >= threshold) {
-	//Noise fluctuation could make fraction>1. Unphysical, set it by hand.
-	if(fraction >1.) fraction = 1.;
-	link_coll.push_back(StripDigiSimLink( (*mi).first, //channel
-					      ((*iter).first)->trackId(), //simhit trackId
-					      ((*iter).first)->eventId(), //simhit eventId
-					      fraction)); //fraction
-      }
-    }
-*/
   }
 }

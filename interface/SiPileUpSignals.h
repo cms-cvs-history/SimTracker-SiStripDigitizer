@@ -15,10 +15,10 @@ class SiPileUpSignals{
  public:
   // type used to describe the amplitude on a strip
   typedef float Amplitude;
+  typedef std::map<unsigned int, Amplitude> ChannelMapType;
   // associates to each strip a vector of amplitudes. 
-  // That allows later to comput the fraction of the contribution of each simhit to the ADC value
-  typedef std::map<int, Amplitude>  SignalMapType;
-  typedef std::map<uint32_t, SignalMapType>  signalMaps;
+  typedef std::map<int, ChannelMapType>  SignalMapType;
+  typedef std::map<uint32_t, SignalMapType> signalMaps;
   
   SiPileUpSignals() { reset(); }
 
@@ -26,7 +26,9 @@ class SiPileUpSignals{
   
   virtual void add(uint32_t detID,
                    const std::vector<double>& locAmpl,
-                   const size_t& firstChannelWithSignal, const size_t& lastChannelWithSignal);
+                   const size_t& firstChannelWithSignal,
+                   const size_t& lastChannelWithSignal,
+                   unsigned int trackID);
 
   void reset(){ resetSignals(); }
   

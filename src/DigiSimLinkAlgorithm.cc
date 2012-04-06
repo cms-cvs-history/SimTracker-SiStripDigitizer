@@ -316,7 +316,6 @@ void DigiSimLinkAlgorithm::push_link(const DigitalVecType &digis,
     double totalAmplitude1 = afterNoise[(*mi).first];
     
     //--- digisimlink
-    int sim_counter=0; 
     for (std::map<const PSimHit *, Amplitude>::const_iterator iter = totalAmplitudePerSimHit.begin(); 
 	 iter != totalAmplitudePerSimHit.end(); iter++){
       float threshold = 0.;
@@ -324,15 +323,10 @@ void DigiSimLinkAlgorithm::push_link(const DigitalVecType &digis,
       if ( fraction >= threshold) {
 	// Noise fluctuation could make fraction>1. Unphysical, set it by hand = 1.
 	if(fraction > 1.) fraction = 1.;
-	for (std::vector < std::pair < const PSimHit*, int > >::const_iterator 
-	       simcount = (*cmi).second.begin() ; simcount != (*cmi).second.end(); simcount ++){
-	  if((*iter).first == (*simcount).first) sim_counter = (*simcount).second;
-	}
 	link_coll.push_back(StripDigiSimLink( (*mi).first, //channel
 					      ((*iter).first)->trackId(), //simhit trackId
-					      sim_counter, //simhit counter
 					      ((*iter).first)->eventId(), //simhit eventId
-					      fraction)); //fraction
+                                              fraction));
       }
     }
   }
@@ -362,7 +356,6 @@ void DigiSimLinkAlgorithm::push_link_raw(const DigitalRawVecType &digis,
     double totalAmplitude1 = afterNoise[(*mi).first];
     
     //--- digisimlink
-    int sim_counter_raw=0;
     for (std::map<const PSimHit *, Amplitude>::const_iterator iter = totalAmplitudePerSimHit.begin(); 
 	 iter != totalAmplitudePerSimHit.end(); iter++){
       float threshold = 0.;
@@ -370,16 +363,10 @@ void DigiSimLinkAlgorithm::push_link_raw(const DigitalRawVecType &digis,
       if (fraction >= threshold) {
 	//Noise fluctuation could make fraction>1. Unphysical, set it by hand.
 	if(fraction >1.) fraction = 1.;
-	//add counter information
-	for (std::vector < std::pair < const PSimHit*, int > >::const_iterator 
-	       simcount = (*cmi).second.begin() ; simcount != (*cmi).second.end(); simcount ++){
-	  if((*iter).first == (*simcount).first) sim_counter_raw = (*simcount).second;
-	}
 	link_coll.push_back(StripDigiSimLink( (*mi).first, //channel
 					      ((*iter).first)->trackId(), //simhit trackId
-					      sim_counter_raw, //simhit counter
 					      ((*iter).first)->eventId(), //simhit eventId
-					      fraction)); //fraction
+                                              fraction));
       }
     }
   }

@@ -31,6 +31,7 @@
 #include "Geometry/CommonTopologies/interface/StripTopology.h"
 #include "Geometry/CommonDetUnit/interface/GeomDetType.h"
 #include "SimGeneral/HepPDTRecord/interface/ParticleDataTable.h"
+#include "SimDataFormats/TrackerDigiSimLink/interface/StripDigiSimLink.h"
 #include "RecoLocalTracker/SiStripZeroSuppression/interface/SiStripFedZeroSuppression.h"
 
 namespace edm {
@@ -48,7 +49,7 @@ class SiStripDigitizerAlgorithm {
   typedef SiDigitalConverter::DigitalVecType DigitalVecType;
   typedef SiDigitalConverter::DigitalRawVecType DigitalRawVecType;
   typedef SiPileUpSignals::SignalMapType SignalMapType;
-  typedef std::map< int, float, std::less<int> > hit_map_type;
+  typedef SiPileUpSignals::ChannelMapType ChannelMapType;
   typedef float Amplitude;
   
   // Constructor
@@ -70,6 +71,7 @@ class SiStripDigitizerAlgorithm {
   void digitize(
                 edm::DetSet<SiStripDigi>& outDigis,
                 edm::DetSet<SiStripRawDigi>& outRawDigis,
+                edm::DetSet<StripDigiSimLink>& outDigiSimLinks,
                 const StripGeomDetUnit* stripdet,
                 edm::ESHandle<SiStripGain>&,
                 edm::ESHandle<SiStripThreshold>&, 
@@ -83,6 +85,20 @@ class SiStripDigitizerAlgorithm {
   }
   
  private:
+  void push_link(
+                 const DigitalVecType& digis,
+                 const SignalMapType& theSignal,
+                 const std::vector<double>& detAmpl,
+                 unsigned int detId,
+                 edm::DetSet<StripDigiSimLink>& outDigiSimLinks);
+
+  void push_link_raw(
+                 const DigitalRawVecType& digis,
+                 const SignalMapType& theSignal,
+                 const std::vector<double>& detAmpl,
+                 unsigned int detId,
+                 edm::DetSet<StripDigiSimLink>& outDigiSimLinks);
+
   const std::string lorentzAngleName;
   const double theElectronPerADC;
   const double theThreshold;

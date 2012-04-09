@@ -6,11 +6,15 @@ void SiPileUpSignals::resetSignals(){
 }
 
 void SiPileUpSignals::add(uint32_t detID, const std::vector<double>& locAmpl,
-                          const size_t& firstChannelWithSignal,
-                          const size_t& lastChannelWithSignal,
-                          const PSimHit* hit) {
-  HitToDigisMapType& theMapLink = signal_[detID];
-  for(size_t iChannel = firstChannelWithSignal; iChannel<lastChannelWithSignal; ++iChannel) {
-    theMapLink[iChannel].emplace_back(std::shared_ptr<SimHitInfoForLinks>(new SimHitInfoForLinks(hit)), Amplitude(locAmpl[iChannel]));
+                          const size_t& firstChannelWithSignal, const size_t& lastChannelWithSignal) {
+  SignalMapType& theSignal = signal_[detID];
+  for (size_t iChannel=firstChannelWithSignal; iChannel<lastChannelWithSignal; ++iChannel) {
+    if(locAmpl[iChannel] != 0.0) {
+      if(theSignal.find(iChannel) == theSignal.end()) {
+        theSignal.insert(std::make_pair(iChannel, locAmpl[iChannel]));
+      } else {
+        theSignal[iChannel] += locAmpl[iChannel];
+      }
+    }
   }
 }

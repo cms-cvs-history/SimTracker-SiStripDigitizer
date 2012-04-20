@@ -64,12 +64,13 @@ SiStripDigitizer::SiStripDigitizer(const edm::ParameterSet& conf, edm::EDProduce
   useConfFromDB(conf.getParameter<bool>("TrackerConfigurationFromDB")),
   zeroSuppression(conf.getParameter<bool>("ZeroSuppression"))
 { 
-  const std::string alias ("simSiStripDigis");
+  const std::string alias("simSiStripDigis");
+  const std::string instance("simSiStripDigis");
   
-  mixMod.produces<edm::DetSetVector<SiStripDigi> >(ZSDigi).setBranchAlias( ZSDigi );
-  mixMod.produces<edm::DetSetVector<SiStripRawDigi> >(SCDigi).setBranchAlias( alias + SCDigi );
-  mixMod.produces<edm::DetSetVector<SiStripRawDigi> >(VRDigi).setBranchAlias( alias + VRDigi );
-  mixMod.produces<edm::DetSetVector<SiStripRawDigi> >(PRDigi).setBranchAlias( alias + PRDigi );
+  mixMod.produces<edm::DetSetVector<SiStripDigi> >(instance + ZSDigi).setBranchAlias(ZSDigi);
+  mixMod.produces<edm::DetSetVector<SiStripRawDigi> >(instance + SCDigi).setBranchAlias(alias + SCDigi);
+  mixMod.produces<edm::DetSetVector<SiStripRawDigi> >(instance + VRDigi).setBranchAlias(alias + VRDigi);
+  mixMod.produces<edm::DetSetVector<SiStripRawDigi> >(instance + PRDigi).setBranchAlias(alias + PRDigi);
   edm::Service<edm::RandomNumberGenerator> rng;
   if ( ! rng.isAvailable()) {
     throw cms::Exception("Configuration")
@@ -211,6 +212,7 @@ void SiStripDigitizer::finalizeEvent(edm::Event& iEvent, edm::EventSetup const& 
     }
   }
 
+  const std::string instance("simSiStripDigis");
   if(zeroSuppression){
     // Step C: create output collection
     std::auto_ptr<edm::DetSetVector<SiStripRawDigi> > output_virginraw(new edm::DetSetVector<SiStripRawDigi>());
@@ -218,10 +220,10 @@ void SiStripDigitizer::finalizeEvent(edm::Event& iEvent, edm::EventSetup const& 
     std::auto_ptr<edm::DetSetVector<SiStripRawDigi> > output_processedraw(new edm::DetSetVector<SiStripRawDigi>());
     std::auto_ptr<edm::DetSetVector<SiStripDigi> > output(new edm::DetSetVector<SiStripDigi>(theDigiVector) );
     // Step D: write output to file
-    iEvent.put(output,ZSDigi);
-    iEvent.put(output_scopemode,SCDigi);
-    iEvent.put(output_virginraw,VRDigi);
-    iEvent.put(output_processedraw,PRDigi);
+    iEvent.put(output, instance + ZSDigi);
+    iEvent.put(output_scopemode, instance + SCDigi);
+    iEvent.put(output_virginraw, instance + VRDigi);
+    iEvent.put(output_processedraw, instance + PRDigi);
   }else{
     // Step C: create output collection
     std::auto_ptr<edm::DetSetVector<SiStripRawDigi> > output_virginraw(new edm::DetSetVector<SiStripRawDigi>(theRawDigiVector));
@@ -229,9 +231,9 @@ void SiStripDigitizer::finalizeEvent(edm::Event& iEvent, edm::EventSetup const& 
     std::auto_ptr<edm::DetSetVector<SiStripRawDigi> > output_processedraw(new edm::DetSetVector<SiStripRawDigi>());
     std::auto_ptr<edm::DetSetVector<SiStripDigi> > output(new edm::DetSetVector<SiStripDigi>() );
     // Step D: write output to file
-    iEvent.put(output,ZSDigi);
-    iEvent.put(output_scopemode,SCDigi);
-    iEvent.put(output_virginraw,VRDigi);
-    iEvent.put(output_processedraw,PRDigi);
+    iEvent.put(output, instance + ZSDigi);
+    iEvent.put(output_scopemode, instance + SCDigi);
+    iEvent.put(output_virginraw, instance + VRDigi);
+    iEvent.put(output_processedraw, instance + PRDigi);
   }
 }

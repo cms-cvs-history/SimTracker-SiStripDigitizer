@@ -131,7 +131,7 @@ SiStripDigitizerAlgorithm::accumulateSimHits(std::vector<PSimHit>::const_iterato
   if(theFlatDistribution->fire()>inefficiency) {
     AssociationInfoForChannel* pDetIDAssociationInfo; // I only need this if makeDigiSimLinks_ is true...
     if( makeDigiSimLinks_ ) pDetIDAssociationInfo=&(associationInfoForDetId_[detId]); // ...so only search the map if that is the case
-    std::vector<double> previousLocalAmplitude; // Only used if makeDigiSimLinks_ is true. Needed to work out the change in amplitude.
+    std::vector<float> previousLocalAmplitude; // Only used if makeDigiSimLinks_ is true. Needed to work out the change in amplitude.
 
     size_t simHitGlobalIndex=inputBeginGlobalIndex; // This needs to stored to create the digi-sim link later
     for (std::vector<PSimHit>::const_iterator simHitIter = inputBegin; simHitIter != inputEnd; ++simHitIter, ++simHitGlobalIndex ) {
